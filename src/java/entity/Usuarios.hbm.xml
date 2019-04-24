@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 23/04/2019 06:24:41 PM by Hibernate Tools 4.3.1 -->
+<!-- Generated 24/04/2019 09:03:05 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entity.Usuarios" table="usuarios" catalog="proyectocriptografia" optimistic-lock="version">
-        <id name="id" type="int">
+        <id name="id" type="java.lang.Integer">
             <column name="id" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="nombre" type="string">
             <column name="nombre" length="100" />
