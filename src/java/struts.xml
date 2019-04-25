@@ -5,6 +5,29 @@
 <struts>
     <include file="example.xml"/>
     <!-- Configuration for the default package. -->
-    <package name="default" extends="struts-default">
+    <package name="Actions" extends="struts-default">
+        <action name="Logear" class="Actions.ActionLogear">
+            <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>
+             <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream</param>
+                    </result>     
+        </action>
+           <action name="Subir" class="Actions.ActionSubir">
+            <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
+                    </result>
+             <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
+                    </result>     
+        </action>
+           <action name="Logout" class="Actions.LogOut">
+             <result name="success">Login.html</result>
+            </action>
     </package>
 </struts>

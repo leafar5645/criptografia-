@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 24/04/2019 09:03:05 AM by Hibernate Tools 4.3.1 -->
+<!-- Generated 25/04/2019 10:32:59 AM by Hibernate Tools 4.3.1 -->
 <hibernate-mapping>
     <class name="entity.Usuarios" table="usuarios" catalog="proyectocriptografia" optimistic-lock="version">
         <id name="id" type="java.lang.Integer">
@@ -19,6 +19,9 @@
         </property>
         <property name="pass" type="string">
             <column name="pass" length="200" />
+        </property>
+        <property name="permisos" type="string">
+            <column name="permisos" length="20" />
         </property>
     </class>
 </hibernate-mapping>
