@@ -29,5 +29,23 @@
            <action name="Logout" class="Actions.LogOut">
              <result name="success">Login.html</result>
             </action>
+         <action name="ListaArchivos" class="Actions.ActionListaArchivos">
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
+             </result>     
+             <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">Error</param>
+             </result>     
+            </action>
+        <action name="Descargar" class="Actions.ActionDescargar">   
+             <result name="error" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">error</param>
+                        
+             </result>     
+            </action>
+            
     </package>
 </struts>

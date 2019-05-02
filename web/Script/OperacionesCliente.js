@@ -23,7 +23,7 @@ function Logear(e)
      var correo =document.getElementById("correo").value;
      var pass = document.getElementById("pass").value;
      var pass2=cifrarpublica(a , pass);
-     console.log(pass2);
+     //console.log(pass2);
      var formData = new FormData();
      formData.append("correo" , correo);
      formData.append("pass" , pass2);
