@@ -8,12 +8,15 @@ package Actions;
 import static com.opensymphony.xwork2.Action.SUCCESS;
 import com.opensymphony.xwork2.ActionSupport;
 import entity.Usuarios;
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.io.StringWriter;
+
 import java.text.Normalizer;
-import javax.servlet.http.HttpServletRequest;
+
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
@@ -26,6 +29,25 @@ import org.apache.struts2.ServletActionContext;
 public class ActionSubir extends ActionSupport {
     private InputStream resourceStream;
     private String llave;
+    private String contenidoA;
+    private String nombreA;
+     
+
+    public String getContenidoA() {
+        return contenidoA;
+    }
+
+    public void setContenidoA(String contenidoA) {
+        this.contenidoA = contenidoA;
+    }
+
+    public String getNombreA() {
+        return nombreA;
+    }
+
+    public void setNombreA(String nombreA) {
+        this.nombreA = nombreA;
+    }
 
     public String getLlave() {
         return llave;
@@ -44,7 +66,7 @@ public class ActionSubir extends ActionSupport {
         this.resourceStream = resourceStream;
     }
 
-    public File getArchivo() {
+   /* public File getArchivo() {
         return archivo;
     }
 
@@ -70,17 +92,20 @@ public class ActionSubir extends ActionSupport {
     File archivo;
     String archivoFileName;
     String archivoContentType;
- 
+ */
  
     
     public String execute() throws Exception {
-       
-       
+      /* PrivateKey privateKey = obtenerPrivada();
+       byte[] llavefile = obtenerLlave(privateKey);
+       byte[] fileAndIv = contenidoA.getBytes();
+       byte[] fileAndIv2=Base64.getDecoder().decode(fileAndIv);
+       byte[] IV = getIv(fileAndIv2);*/
       // copyInputStreamToFile lo usare despues ;
     
-        System.out.println("arch:"+archivoContentType);
+       // System.out.println("arch:"+archivoContentType);
        String path= ServletActionContext.getServletContext().getRealPath("/");
-       String cadenaNormalize = Normalizer.normalize(archivoFileName, Normalizer.Form.NFD);   
+       String cadenaNormalize = Normalizer.normalize(nombreA, Normalizer.Form.NFD);   
        String cadenaSinAcentos = cadenaNormalize.replaceAll("[^\\p{ASCII}]", "");
       System.out.println("Resultado: " + cadenaSinAcentos);
       //generando directorios
@@ -94,10 +119,9 @@ public class ActionSubir extends ActionSupport {
         {
             File f2= new File(path2);
        File f = new File(path);
-        System.out.println("pase");
-        System.out.println(archivo.length());
+       
         
-      FileUtils.copyFile(archivo, f);
+      FileUtils.writeStringToFile(f,contenidoA);
       FileUtils.writeStringToFile(f2, llave);
         }
         catch(Exception e)
@@ -110,7 +134,36 @@ public class ActionSubir extends ActionSupport {
        
             return SUCCESS;
     }
+    /*
+  public PrivateKey obtenerPrivada() 
+  {
+   
+      return null;
+  }
+  public byte[]  obtenerLlave (PrivateKey pk) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
+  {
   
+      byte [] llave2 =llave.getBytes();
+      byte [] result=null ;
+      llave2=Base64.getDecoder().decode(llave2);
+      // bkey=Base64.getEncoder().encode(bkey);
+       Cipher cipher = Cipher.getInstance("RSA");  
+        cipher.init(Cipher.DECRYPT_MODE, pk);
+        try{
+        result = cipher.doFinal(llave2);
+        } catch(Exception e)
+        {
+            System.out.println("" + e.toString());
+        }
+        //System.out.println("llave" + s);
+        return result;
     
-    
+  }
+
+    private byte[] getIv(byte[] fileAndIv) {
+       byte [] iv = new byte[8];
+       System.arraycopy(fileAndIv, 0, iv, 0, 8);
+       return iv;
+    }
+ */   
 }

@@ -46,6 +46,14 @@
                         
              </result>     
             </action>
+             <action name="Nuevas" class="Actions.ActionGenerarLLaves">   
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream </param>
+                        
+             </result>  
+             <result name="error">Nice.jsp</result>   
+            </action>
             
     </package>
 </struts>
