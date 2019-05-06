@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -27,6 +28,10 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.servlet.http.HttpSession;
@@ -100,7 +105,7 @@ public class ActionGenerarLLaves extends ActionSupport {
       out.write(b2);
       out.close();
   }
-  public void alterarTodasLlaves (PublicKey pk) throws FileNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, IOException
+  public void alterarTodasLlaves (PublicKey pk) throws FileNotFoundException, NoSuchAlgorithmException, InvalidKeySpecException, IOException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException
   {
 
 
@@ -127,8 +132,18 @@ byte []all2 = null;
 KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
 PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(oldprivateKeyBytes));
-     byte [] all3 = privateKey.getEncoded();
-    System.out.println("el regreso" + new String(Base64.getEncoder().encode(all3))); 
+String path2="";
+ File dir= new File(path2);
+ String[] archivos= dir.list();
+ for (int i=0; i<archivos.length;i++)
+ {
+     if(archivos[i].contains(".key"))
+     {
+         recifrar(archivos[i] , privateKey , pk);
+     }
+ }
+  //   byte [] all3 = privateKey.getEncoded();
+    //System.out.println("el regreso" + new String(Base64.getEncoder().encode(all3))); 
   }
 
     private void escribirPrivate(PrivateKey privateKey) throws FileNotFoundException, IOException {
@@ -166,5 +181,30 @@ byte [] last3=Base64.getEncoder().encode(b3);
      // out.write(last3);
       out.close();
         System.out.println("inicial" + f.length());
+    }
+
+    private void recifrar(String archivo, PrivateKey privateKey, PublicKey pk) throws FileNotFoundException, IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        File f =new File(path + "archivos/" + archivo );
+        byte [] b = new byte [(int)f.length()];
+        byte [] b2 = Base64.getDecoder().decode(b);
+        DataInputStream in = new DataInputStream(new FileInputStream(f));
+        in.read(b);
+        
+        
+         Cipher cipher = Cipher.getInstance("RSA");  
+         cipher.init(Cipher.DECRYPT_MODE, privateKey);
+          byte [] limpio=cipher.doFinal(b2);
+         // f.delete
+          //File f2= new File(path + "archivos/" + archivo );
+        cipher = Cipher.getInstance("RSA");  
+        cipher.init(Cipher.ENCRYPT_MODE, pk);  
+
+        byte [] limpio2=cipher.doFinal(limpio);
+        byte salida[] =Base64.getEncoder().encode(limpio2);
+         FileOutputStream out = new FileOutputStream(f);
+      out.write(salida);
+      out.close();
+        
+        
     }
 }
