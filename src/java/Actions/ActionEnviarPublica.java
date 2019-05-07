@@ -41,7 +41,8 @@ public class ActionEnviarPublica extends ActionSupport {
        FileInputStream fi = new FileInputStream(f);
        byte [] b = new byte [(int)f.length()];
        fi.read(b);
-      
+     // byte [] c= Base64.getDecoder().decode(b);
+       // System.out.println("---" + new String (c) );
        resourceStream= new ByteArrayInputStream(b);
         return SUCCESS;
     }

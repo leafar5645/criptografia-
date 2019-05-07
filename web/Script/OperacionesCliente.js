@@ -22,8 +22,16 @@ function Logear(e)
           });*/
      var correo =document.getElementById("correo").value;
      var pass = document.getElementById("pass").value;
-     var pass2=cifrarpublica(a , pass);
-     //console.log(pass2);
+     var b=pedirPublica();
+     a=atob(b);
+    
+          
+     var pass2=cifrarpublica(b , pass);
+     
+     //pass=btoa(pass2);
+     alert("pass 2" + pass2);
+     //alert("pass 1" + pass);
+     //console.log(a);
      var formData = new FormData();
      formData.append("correo" , correo);
      formData.append("pass" , pass2);
@@ -56,8 +64,11 @@ function Logear(e)
 }
 function cifrarpublica(a , pass)
 {
-    
-    return pass;
+      var encrypt = new JSEncrypt();
+          encrypt.setPublicKey(a);
+          var encrypted = encrypt.encrypt(pass);
+          alert("que pasa" + encrypted);
+    return encrypted;
 }
 function cifrarfile(file)
 {
@@ -76,6 +87,7 @@ function Upload ()
             url: 'Subir',
             type: 'POST',
             data: formData,
+            async:false,
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
@@ -86,6 +98,28 @@ function Upload ()
                 alert("Archivo invalido");
             }
         });
+}
+function pedirPublica()
+{
+    var formdata = new FormData();
+    var a;
+          $.ajax({
+            url: 'PedirPublica',
+            type: 'POST',
+            data:  formdata,
+            async:false,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+                alert(data);
+                a=data;
+               
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+       return a;
 }
 
 

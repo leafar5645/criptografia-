@@ -63,15 +63,16 @@ public class ActionDescargarLlave extends ActionSupport {
     public String execute() throws Exception {
       PublicKey pk=obtenerPk();  
       filename= filename+".key";
-      path=ServletActionContext.getServletContext().getRealPath("/archivos");
-      File f2 = new File(path + "/" + filename);
+      path=ServletActionContext.getServletContext().getRealPath("/");
+      File f2 = new File(path + "archivos/" + filename);
       File f= new File(path + "CSS/" + nombreprivada);
       byte []all = new byte [(int)f2.length()] ;
       byte []llavefile = null;
       byte []all2 = null;
       DataInputStream in = new DataInputStream(new FileInputStream(f2));
       in.read(all);
-      llavefile=Base64.getDecoder().decode(all);
+      //llavefile=Base64.getDecoder().decode(all);
+      llavefile=all.clone();
       in = new DataInputStream(new FileInputStream(f));
       all = new byte [(int)f.length()] ;
       in.read(all);

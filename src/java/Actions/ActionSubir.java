@@ -66,7 +66,7 @@ public class ActionSubir extends ActionSupport {
         this.resourceStream = resourceStream;
     }
 
-   /* public File getArchivo() {
+  public File getArchivo() {
         return archivo;
     }
 
@@ -92,7 +92,7 @@ public class ActionSubir extends ActionSupport {
     File archivo;
     String archivoFileName;
     String archivoContentType;
- */
+ 
  
     
     public String execute() throws Exception {

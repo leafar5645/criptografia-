@@ -58,10 +58,7 @@ public class ActionGenerarLLaves extends ActionSupport {
         HttpSession sesion = ServletActionContext.getRequest().getSession();
         Usuarios user = (Usuarios) sesion.getAttribute("user");
        resourceStream  = new StringBufferInputStream("Bien");
-        if(user !=null)
-        {
-           if(user.getTipo().equalsIgnoreCase("Administrador"))
-                   {
+       
                        
                         KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
                         keyPairGenerator.initialize(keySize, aleatorios);
@@ -71,7 +68,7 @@ public class ActionGenerarLLaves extends ActionSupport {
                        
                         
                          PublicKey pubKey = keyPair.getPublic();
-                         alterarTodasLlaves(pubKey);
+                        alterarTodasLlaves(pubKey);
                          escribirPublic(pubKey);
                          PrivateKey privateKey = keyPair.getPrivate();
                          escribirPrivate(privateKey);
@@ -80,10 +77,8 @@ public class ActionGenerarLLaves extends ActionSupport {
        // System.out.println("input"+archivoFileName);
        
             return SUCCESS;
-                   }
-        }
+       
         
-        return ERROR;
     }
 
     public InputStream getResourceStream() {
@@ -100,7 +95,10 @@ public class ActionGenerarLLaves extends ActionSupport {
       System.out.println("public" + b.length);
      byte []b2 = Base64.getEncoder().encode(b);
      File f= new File(path + "archivos/" + nombrepublica);
-     
+     if(!f.exists())
+     {
+         f.createNewFile();
+     }
       FileOutputStream out = new FileOutputStream(f);
       out.write(b2);
       out.close();
@@ -111,6 +109,10 @@ public class ActionGenerarLLaves extends ActionSupport {
 
 
  File f= new File(path + "CSS/" + nombreprivada);
+ if(!f.exists())
+ {
+     f.createNewFile();
+ }
       System.out.println("---" + f.length());
       byte []all = new byte [(int)f.length()] ;
 byte []all2 = null;
@@ -133,15 +135,16 @@ KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
 PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(oldprivateKeyBytes));
 String path2="";
- File dir= new File(path2);
- String[] archivos= dir.list();
+ //File dir= new File(path2);
+// String[] archivos= dir.list();
+ /*
  for (int i=0; i<archivos.length;i++)
  {
      if(archivos[i].contains(".key"))
      {
          recifrar(archivos[i] , privateKey , pk);
      }
- }
+ }*/
   //   byte [] all3 = privateKey.getEncoded();
     //System.out.println("el regreso" + new String(Base64.getEncoder().encode(all3))); 
   }
