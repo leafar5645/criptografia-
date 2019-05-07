@@ -30,7 +30,7 @@ public class ActionSubir extends ActionSupport {
     private InputStream resourceStream;
     private String llave;
     private String contenidoA;
-    private String nombreA;
+    private String nombre;
      
 
     public String getContenidoA() {
@@ -41,12 +41,12 @@ public class ActionSubir extends ActionSupport {
         this.contenidoA = contenidoA;
     }
 
-    public String getNombreA() {
-        return nombreA;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreA(String nombreA) {
-        this.nombreA = nombreA;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getLlave() {
@@ -96,6 +96,7 @@ public class ActionSubir extends ActionSupport {
  
     
     public String execute() throws Exception {
+        System.out.println("" + archivo.length());
       /* PrivateKey privateKey = obtenerPrivada();
        byte[] llavefile = obtenerLlave(privateKey);
        byte[] fileAndIv = contenidoA.getBytes();
@@ -105,7 +106,7 @@ public class ActionSubir extends ActionSupport {
     
        // System.out.println("arch:"+archivoContentType);
        String path= ServletActionContext.getServletContext().getRealPath("/");
-       String cadenaNormalize = Normalizer.normalize(archivoFileName, Normalizer.Form.NFD);   
+       String cadenaNormalize = Normalizer.normalize(nombre, Normalizer.Form.NFD);   
        String cadenaSinAcentos = cadenaNormalize.replaceAll("[^\\p{ASCII}]", "");
       System.out.println("Resultado: " + cadenaSinAcentos);
       //generando directorios

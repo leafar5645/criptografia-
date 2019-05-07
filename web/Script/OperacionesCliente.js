@@ -74,6 +74,7 @@ function cargar()
     archivo.onload= function()
     {
         arraybuffer=this.result;
+        
         console.log("entre2");
     }
      archivo.readAsArrayBuffer($('#archivo')[0].files[0]);
@@ -105,7 +106,7 @@ function cifrarfile(file, key)
     key,
     arraybuffer
     ).then(function(result){
-        console.log("hola"+result);
+        console.log(result);
         return new Uint8Array(result);
     });
     
@@ -119,8 +120,8 @@ async function importarKey(key)
     key
   );
   console.log(exported)
-  var exportedAsString = ab2str(exported);
-  var exportedAsBase64 = await window.btoa(exportedAsString);
+  //var exportedAsString = ab2str(exported);
+  var exportedAsBase64 = await window.btoa(exported);
   return exportedAsBase64;
 }
 async function Upload ()
@@ -133,15 +134,20 @@ async function Upload ()
     //var file=null;
    var fileC= await cifrarfile(file,key);
     console.log(fileC);
-    var myBlob= new Blob([fileC],{type:'blob'})
+    var myBlob= new Blob([fileC],{type:file.type})
+    myBlob.lastModifiedDate= new Date();
+    myBlob.name=file.name;
     console.log(myBlob);
     var importada =await importarKey(key);
     console.log(importada);
-    var fileEnvio= new File(fileC,file.name);
+    //var fileEnvio= new File(myBlob,file.name);
+    //console.log(fileEnvio);
+    
     
     var formData = new FormData();
      //var hola = "hola";
-        formData.append('archivo', fileEnvio );
+        formData.append('archivo', myBlob );
+        formData.append('nombre' , file.name);
         formData.append("llave" , importada);
      peticion(formData);
 }
