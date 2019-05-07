@@ -105,7 +105,7 @@ public class ActionSubir extends ActionSupport {
     
        // System.out.println("arch:"+archivoContentType);
        String path= ServletActionContext.getServletContext().getRealPath("/");
-       String cadenaNormalize = Normalizer.normalize(nombreA, Normalizer.Form.NFD);   
+       String cadenaNormalize = Normalizer.normalize(archivoFileName, Normalizer.Form.NFD);   
        String cadenaSinAcentos = cadenaNormalize.replaceAll("[^\\p{ASCII}]", "");
       System.out.println("Resultado: " + cadenaSinAcentos);
       //generando directorios
@@ -120,8 +120,8 @@ public class ActionSubir extends ActionSupport {
             File f2= new File(path2);
        File f = new File(path);
        
-        
-      FileUtils.writeStringToFile(f,contenidoA);
+        FileUtils.copyFile(archivo, f);
+      //FileUtils.writeStringToFile(f,contenidoA);
       FileUtils.writeStringToFile(f2, llave);
         }
         catch(Exception e)

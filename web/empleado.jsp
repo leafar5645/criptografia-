@@ -25,7 +25,7 @@
         Usuarios us = (Usuarios)session.getAttribute("user");
           
         %>
-        <h1>Hello World! <% out.print(us.getNombre()); %></h1>  <h3><a href='Logout'>Salir</a></h3>
+        <h1><% out.print(us.getNombre()); %></h1>  <h3><a href='Logout'>Salir</a></h3>
         <br>
         <br>
         <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("upload") ) {%>
@@ -38,7 +38,7 @@
         <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("download") ) {%>
         <button  onclick="verArchivos()">ver Archivos</button>
         <div id="archivos-mostrar">
-        </di>
+        </div>
         <% }
         
         }

@@ -23,13 +23,13 @@ function Logear(e)
      var correo =document.getElementById("correo").value;
      var pass = document.getElementById("pass").value;
      var b=pedirPublica();
-     a=atob(b);
+   //  a=atob(b);
     
           
      var pass2=cifrarpublica(b , pass);
      
      //pass=btoa(pass2);
-     alert("pass 2" + pass2);
+    // alert("pass 2" + pass2);
      //alert("pass 1" + pass);
      //console.log(a);
      var formData = new FormData();
@@ -67,7 +67,7 @@ function cifrarpublica(a , pass)
       var encrypt = new JSEncrypt();
           encrypt.setPublicKey(a);
           var encrypted = encrypt.encrypt(pass);
-          alert("que pasa" + encrypted);
+         // alert("que pasa" + encrypted);
     return encrypted;
 }
 function cifrarfile(file)
@@ -111,7 +111,7 @@ function pedirPublica()
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
-                alert(data);
+               // alert(data);
                 a=data;
                
             },
