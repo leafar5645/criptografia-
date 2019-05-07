@@ -68,7 +68,7 @@ public class ActionGenerarLLaves extends ActionSupport {
                        
                         
                          PublicKey pubKey = keyPair.getPublic();
-                        alterarTodasLlaves(pubKey);
+                         alterarTodasLlaves(pubKey);
                          escribirPublic(pubKey);
                          PrivateKey privateKey = keyPair.getPrivate();
                          escribirPrivate(privateKey);

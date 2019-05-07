@@ -1,5 +1,7 @@
+var keyPublic;
 function verArchivos()
 {
+    pruebas();//solo es para pruebas BORRAR AL TERMINAR
     var archivos=[];
       $.ajax({
             url: 'ListaArchivos',
@@ -61,4 +63,25 @@ function BajarArchivo(ev)
 function decifrar(archivo)
 {
     return archivo;
+}
+
+//-----------------------PRUEBAS---------------
+function pruebas()
+{
+    /*
+    var keyP=null;
+    var encript= pedirLlaveServidor();
+    */
+
+    var key= generarLlavesRSA();
+    console.log("llaveC"+key[0]);
+    console.log("llaveC"+key[1]);
+    enviarLlavePublica(key);
+    var prueba="hola";
+    prueba=window.btoa(prueba);
+    prueba= cifrarRSA(prueba,key);
+    console.log("cifrado: "+prueba);
+    prueba= decifrarRSA(prueba,key);
+     console.log("decifrado: "+prueba);
+     
 }

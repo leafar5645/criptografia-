@@ -42,7 +42,7 @@ public class ActionEnviarPublica extends ActionSupport {
        byte [] b = new byte [(int)f.length()];
        fi.read(b);
      // byte [] c= Base64.getDecoder().decode(b);
-       // System.out.println("---" + new String (c) );
+        System.out.println("---" + new String (b) );//BORRAR AL TERMINAR
        resourceStream= new ByteArrayInputStream(b);
         return SUCCESS;
     }

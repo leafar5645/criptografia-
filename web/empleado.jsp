@@ -11,12 +11,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <script src="Script/jsencrypt.js"></script>
+        <script src="Script/jquery-3.3.1.min.js"></script>
+        <script src="Script/intercambioLlaves.js"></script>
         <script src="Script/OperacionesCliente.js"></script>
         <script src="Script/OperacionesClienteBajarArchivos.js"></script>
-        <script src="Script/jquery-3.3.1.min.js"></script>
-        
-        
-        
+
     </head>
     <body>
         <% 
