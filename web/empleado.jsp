@@ -30,7 +30,7 @@
         <br>
         <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("upload") ) {%>
         <h2>Selecciona el archivo a subir</h2>
-        <input type="file" name='archivo' id="archivo"/>
+        <input type="file" name='archivo' id="archivo" onchange="cargar()"/>
         <button  onclick="Upload()">Subir Archivo</button>
         <% }%>
             <br>
