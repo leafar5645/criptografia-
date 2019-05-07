@@ -54,7 +54,7 @@ public class ActionListaArchivos extends ActionSupport {
             if(archivos.length>0)
                 for (int i = 0; i < archivos.length; i++) 
                 {
-                    if(!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("key"))
+                    if(!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("key")&&!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("iv"))
                     salida+=archivos[i]+"@";
                 }
             else

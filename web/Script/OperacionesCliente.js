@@ -9,11 +9,6 @@ function Logear(e)
     
           
      var pass2=cifrarpublica(b , pass);
-     
-     //pass=btoa(pass2);
-    // alert("pass 2" + pass2);
-     //alert("pass 1" + pass);
-     //console.log(a);
      var formData = new FormData();
      formData.append("correo" , correo);
      formData.append("pass" , pass2);
@@ -66,38 +61,23 @@ async function llavesAES()
 var importada;
 var arraybuffer;
 var archivo;
+var iv;
 function cargar()
 {
-     archivo= new FileReader(); 
-   console.log("entre");
-   
+     archivo= new FileReader();   
     archivo.onload= function()
     {
         arraybuffer=this.result;
         
-        console.log("entre2");
+        console.log("Archivo Cargado");
     }
      archivo.readAsArrayBuffer($('#archivo')[0].files[0]);
 }
-function cifrarfile(file, key)
+function cifrarfile( key)
 {
-  
-   
-   
-    var myBlob = new Blob([file],{type: "blob"});
-    console.log(myBlob);
-    var arr = new Uint8Array(myBlob);
-    //var plaintext= archivo.readAsArrayBuffer(myBlob);
-    //console.log(plaintext);
-    //myBlob = new Blob([new Uint8Array(plaintext)]);
-    //console.log(myBlob);
-    console.log(arraybuffer);
-    //var key=await llavesAES(); 
     llave=key;
-    //importada = await importarKey(llave);
-    console.log(key);
-    console.log(llave);
-    var iv =  window.crypto.getRandomValues(new Uint8Array(16));
+
+    iv =  window.crypto.getRandomValues(new Uint8Array(16));
   return  window.crypto.subtle.encrypt(
     {
       name: "AES-CBC",
@@ -106,49 +86,38 @@ function cifrarfile(file, key)
     key,
     arraybuffer
     ).then(function(result){
-        console.log(result);
         return new Uint8Array(result);
     });
     
 }
-async function importarKey(key)
+async function exportarKey(key)
 {
-    console.log(key);
-   
     const exported = await window.crypto.subtle.exportKey(
     "raw",
     key
   );
-  console.log(exported)
-  //var exportedAsString = ab2str(exported);
-  var exportedAsBase64 = await window.btoa(exported);
+  var exportedKeyBuffer = new Uint8Array(exported);
+  var exportedAsString = ab2str(exportedKeyBuffer);
+  var exportedAsBase64 = await window.btoa(exportedAsString);
   return exportedAsBase64;
 }
 async function Upload ()
 { 
     var key=await llavesAES(); 
-    console.log(key);
-    
      var file=  $('#archivo')[0].files[0];
-     //var file=new File("hola","oh");
-    //var file=null;
-   var fileC= await cifrarfile(file,key);
-    console.log(fileC);
-    var myBlob= new Blob([fileC],{type:file.type})
+   var fileC= await cifrarfile(key);
+    var myBlob= new Blob([fileC],{type:file.type});
     myBlob.lastModifiedDate= new Date();
     myBlob.name=file.name;
-    console.log(myBlob);
-    var importada =await importarKey(key);
-    console.log(importada);
-    //var fileEnvio= new File(myBlob,file.name);
-    //console.log(fileEnvio);
-    
-    
+    var importada =await exportarKey(key);
     var formData = new FormData();
+    var ivexportedAsString = ab2str(iv);
+    var ivexportedAsBase64 = await window.btoa(ivexportedAsString);
      //var hola = "hola";
         formData.append('archivo', myBlob );
         formData.append('nombre' , file.name);
         formData.append("llave" , importada);
+        formData.append("iv" , ivexportedAsBase64);
      peticion(formData);
 }
 
@@ -162,7 +131,8 @@ function peticion(formData)
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
-                alert(data);
+                if(data.toString()=="Bien")
+                alert("Archivo Subido Con Exito");
             },
             error: function () {
                 alert("Archivo invalido");

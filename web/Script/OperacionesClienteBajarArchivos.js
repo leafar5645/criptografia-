@@ -1,7 +1,7 @@
 var keyPublic;
 function verArchivos()
 {
-    pruebas();//solo es para pruebas BORRAR AL TERMINAR
+    //pruebas();//solo es para pruebas BORRAR AL TERMINAR
     var archivos=[];
       $.ajax({
             url: 'ListaArchivos',
@@ -36,31 +36,28 @@ function verArchivos()
 }
   
  var arraybuffer;
-async function leer(b)
+async function leer(b,key)
 { 
     
      var archivo= new FileReader(); 
-   console.log("entre");
       await archivo.readAsArrayBuffer(b);
-   archivo.onload=  function()
+   archivo.onload=  async function()
     {
         arraybuffer=  this.result;
-        
-        continuar();
-    }
-   console.log("llegue");
- 
+        var arch= await decifrar(arraybuffer,key);
+        var myBlob= new Blob([arch]);
+        var link = document.createElement('a');
+        link.href = window.URL.createObjectURL(myBlob);
+        link.download = nombreglobal;
+        link.click();
+    } 
 }
-async function continuar()
+async function obtenerArchivo(nombre,key)
 {
-   console.log(arraybuffer);
-    var key = await importarkeyv(arraybuffer);
-    console.log(key);
-    console.log(nombreglobal);
     var formData = new FormData();
     var llave="hola";
     formData.append("llave" , llave);
-    formData.append("nombreArchivo" , nombreglobal );
+    formData.append("nombreArchivo" , nombre );
     
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'Descargar', true);
@@ -70,38 +67,46 @@ async function continuar()
     xhr.onload = function(e) {
       if (this.status == 200) {
         var blob = new Blob([this.response]);
-        //console.log(blob.size);
-        var arch = decifrar(blob);
-        var link = document.createElement('a');
-        link.href = window.URL.createObjectURL(arch);
-        link.download = nombreglobal;
-        link.click();       
+        leer(blob,key);
+               
       }
     }; 
 }
 var nombreglobal;
+var iv;
 async function BajarArchivo(ev)
 {
     var nombre=ev.name;
     nombreglobal=ev.name;
-    var llave2= await pedirLLave(nombre);
-    console.log(llave2)
+    var llave2= pedirLLave(nombre);
     var llave3=atob(llave2);
-   // llave2 =str2ab(llave2);
+    var llave =str2ab(llave3);
     
-    console.log(llave3);
-    var b = new Blob([llave3]);
-    console.log(b);
-   var buffer=await leer(b); 
+    var iv64 = pedirIV(nombre);
+    var ivString=atob(iv64);
+    iv =str2ab(ivString);
+   //var buffer=await leer(llave); 
+   var key= await importarkeyv(llave);
    
+   obtenerArchivo(nombre,key);
 }
-function decifrar(archivo)
+function decifrar(archivo,key)
 {
+    return window.crypto.subtle.decrypt(
+    {
+      name: "AES-CBC",
+      iv: iv
+    },
+    key,
+    archivo
+    ).then(function(result){
+        
+        return new Uint8Array(result);
+    });
     return archivo;
 }
 function pedirLLave(nombre)
 {
-    console.log("entre");
       var formdata = new FormData();
       formdata.append("nombre" , nombre);
     var a;
@@ -113,7 +118,6 @@ function pedirLLave(nombre)
             processData: false, // tell jQuery not to process the data
             contentType: false, // tell jQuery not to set contentType
             success: function (data) {
-               // alert(data);
                 a=data;
                
             },
@@ -123,26 +127,46 @@ function pedirLLave(nombre)
         });
         return a;
 }
+function pedirIV(nombre)
+{
+      var formdata = new FormData();
+      formdata.append("nombre" , nombre);
+    var a;
+          $.ajax({
+            url: 'PedirIV',
+            type: 'POST',
+            data:  formdata,
+            async:false,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+                a=data;
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+        return a;
+}
 async function importarkeyv(rawKey)
 {
- 
-  return await window.crypto.subtle.importKey(
+  return window.crypto.subtle.importKey(
     "raw",
     rawKey,
     "AES-CBC",
     true,
     ["encrypt", "decrypt"]
   );
-
 }
 
 //-----------------------PRUEBAS---------------
+/*
 function pruebas()
 {
-    /*
+    
     var keyP=null;
     var encript= pedirLlaveServidor();
-    */
+    
 
     var key= generarLlavesRSA();
     console.log("llaveC"+key[0]);
@@ -155,11 +179,14 @@ function pruebas()
     prueba= decifrarRSA(prueba,key);
      console.log("decifrado: "+prueba);
      
-}
+}*/
+/*Convert a string into an ArrayBuffer
+from https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
+*/
 function str2ab(str) {
-  var buf = new ArrayBuffer(str.length*2); // 2 bytes for each char
-  var bufView = new Uint8Array(buf);
-  for (var i=0, strLen=str.length; i < strLen; i++) {
+  const buf = new ArrayBuffer(str.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0, strLen = str.length; i < strLen; i++) {
     bufView[i] = str.charCodeAt(i);
   }
   return buf;

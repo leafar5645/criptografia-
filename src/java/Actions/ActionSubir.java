@@ -29,10 +29,19 @@ import org.apache.struts2.ServletActionContext;
 public class ActionSubir extends ActionSupport {
     private InputStream resourceStream;
     private String llave;
+    private String iv;
     private String contenidoA;
     private String nombre;
-     
 
+    public String getIv() {
+        return iv;
+    }
+
+    public void setIv(String iv) {
+        this.iv = iv;
+    }
+     
+    
     public String getContenidoA() {
         return contenidoA;
     }
@@ -115,14 +124,15 @@ public class ActionSubir extends ActionSupport {
        dir.mkdirs();
        path=path + "/" + cadenaSinAcentos;
        String path2= path + ".key" ;
+       String path3=path+".iv";
         System.out.println( path );
         try
         {
             File f2= new File(path2);
        File f = new File(path);
-       
+       File f3= new File(path3);
         FileUtils.copyFile(archivo, f);
-      //FileUtils.writeStringToFile(f,contenidoA);
+      FileUtils.writeStringToFile(f3,iv);
       FileUtils.writeStringToFile(f2, llave);
         }
         catch(Exception e)
