@@ -33,10 +33,10 @@ function pedirEmpleados()
               var split2 =split[i].split(":");
               var options;
              
-              if(split2[1]=="ALL") {options="<option value='ALL' selected='selected'>ALL</option><option value='upload'>upload</option><option value='download'>download</option>";}
-              if(split2[1]=="upload")  options="<option value='ALL'>ALL</option><option value='upload'  selected='selected'>upload</option><option value='download'>download</option>";   
-              if(split2[1]=="download")options="<option value='ALL'>ALL</option><option value='upload'>upload</option><option value='download' selected='selected'>download</option>";    
-               
+              if(split2[1]=="ALL") {options="<option value='ALL' selected='selected'>ALL</option><option value='upload'>Upload</option><option value='download'>Download</option><option value='none'>None</option> ";}
+              if(split2[1]=="upload")  options="<option value='ALL'>ALL</option><option value='upload'  selected='selected'>Upload</option><option value='download'>Download</option><option value='none'>None</option> ";   
+              if(split2[1]=="download")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' selected='selected'>Download</option><option value='none'>None</option>";    
+              if(split2[1]=="none")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' >Download</option><option value='none' selected='selected'>None</option>";  
         tabla+="<tr><td>"+split2[0]+"</td><td><select name='"+split2[2]+"' onchange='CambioPermisos(this)'>"+options+"</select> </td></tr>";
           }
           tabla+="</table>";

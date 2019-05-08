@@ -63,6 +63,7 @@ public class ActionDescargarLlave extends ActionSupport {
     public String execute() throws Exception {
       PublicKey pk=obtenerPk();  
       filename= filename+".key";
+     
       path=ServletActionContext.getServletContext().getRealPath("/");
       File f2 = new File(path + "archivos/" + filename);
       File f= new File(path + "CSS/" + nombreprivada);
@@ -113,5 +114,7 @@ public class ActionDescargarLlave extends ActionSupport {
        return pubKey;
       
     }
+
+ 
     
 }

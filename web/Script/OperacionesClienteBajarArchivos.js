@@ -111,7 +111,7 @@ function pedirLLave(nombre)
       formdata.append("nombre" , nombre);
     var a;
           $.ajax({
-            url: 'PedirLLave',
+            url: 'PedirLLave2',
             type: 'POST',
             data:  formdata,
             async:false,
