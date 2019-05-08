@@ -130,7 +130,7 @@ public class ActionLogear extends ActionSupport {
  {
  Usuarios us =(Usuarios)l.get(0);
         System.out.println(us.getNombre());
-        respuesta="" + us.getTipo() + ".jsp";
+        respuesta="empleado.jsp";
      HttpSession s =   ServletActionContext.getRequest().getSession();
      s.setAttribute("user", us);
     

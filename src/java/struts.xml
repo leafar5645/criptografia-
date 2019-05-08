@@ -79,5 +79,21 @@
              </result>  
              <result name="error">Nice.jsp</result>   
             </action>
+            <action name="PedirEmpleados" class="Actions.PedirEmpleados">   
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream </param>
+                        
+             </result>  
+             <result name="error">Nice.jsp</result>   
+            </action>
+              <action name="ActualizarPermisos" class="Actions.ActionActualizarPermisos">   
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">responseStream </param>
+                        
+             </result>  
+             <result name="error">Nice.jsp</result>   
+            </action>
     </package>
 </struts>
