@@ -4,7 +4,7 @@
 
 <struts>
     <include file="example.xml"/>
-    <!-- Configuration for the default package. -->
+    <constant name="struts.multipart.maxSize" value="500000000" />
     <package name="Actions" extends="struts-default">
         <action name="Logear" class="Actions.ActionLogear">
             <result name="success" type="stream" >

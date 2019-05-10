@@ -130,7 +130,7 @@ byte []all2 = null;
      oldprivateKeyBytes[z]=all2[i+1];
     z= z+1;
   }
-       System.out.println("la ida" + new String(Base64.getEncoder().encode(oldprivateKeyBytes)));
+       System.out.println("la ida" + oldprivateKeyBytes);
 KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
 PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(oldprivateKeyBytes));
