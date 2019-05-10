@@ -9,8 +9,17 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Base64;
+import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 /**
@@ -19,6 +28,19 @@ import org.apache.struts2.ServletActionContext;
  */
 public class ActionEnviarPublica extends ActionSupport {
     private InputStream  resourceStream;
+      private SecureRandom aleatorios;  
+    private  final int keySize = 2048;
+    private String correo;
+    private String path;
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+   
 
     public InputStream getResourceStream() {
         return resourceStream;
@@ -28,23 +50,47 @@ public class ActionEnviarPublica extends ActionSupport {
         this.resourceStream = resourceStream;
     }
 
-   
-    private String nombrepublica="publica.txt";
-    private String path;
+ 
     
     public ActionEnviarPublica() {
     }
     
     public String execute() throws Exception {
-        path=ServletActionContext.getServletContext().getRealPath("/archivos");
-       File f = new File (path + "/" + nombrepublica);
-       FileInputStream fi = new FileInputStream(f);
-       byte [] b = new byte [(int)f.length()];
-       fi.read(b);
-     // byte [] c= Base64.getDecoder().decode(b);
-        System.out.println("---" + new String (b) );//BORRAR AL TERMINAR
+       aleatorios =  SecureRandom.getInstance("SHA1PRNG");
+       path=ServletActionContext.getServletContext().getRealPath("/");
+       System.out.println("" + path);
+       resourceStream  = new StringBufferInputStream("Bien");
+       KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+       keyPairGenerator.initialize(keySize, aleatorios);
+       KeyPair keyPair = keyPairGenerator.genKeyPair();
+       PublicKey pubKey = keyPair.getPublic();
+       byte []b =      escribirPublic(pubKey);
+       PrivateKey privateKey = keyPair.getPrivate();
+       escribirPrivate(privateKey);
+       path=ServletActionContext.getServletContext().getRealPath("/archivos");
        resourceStream= new ByteArrayInputStream(b);
-        return SUCCESS;
+       return SUCCESS;
+    }
+
+    private void escribirPrivate(PrivateKey privateKey) throws IOException {
+     byte []b= privateKey.getEncoded();
+     byte []b2 = Base64.getEncoder().encode(b);
+     File f= new File(path + "archivos/" + correo+".pl");
+     if(!f.exists())
+     {
+         f.createNewFile();
+     }
+      FileOutputStream out = new FileOutputStream(f);
+      out.write(b2);
+      out.close();
+        
+   }
+
+    private byte[] escribirPublic(PublicKey pubKey) {
+      byte []b= pubKey.getEncoded();
+      System.out.println("public" + b.length);
+      byte []b2=null;
+      return b2 = Base64.getEncoder().encode(b);
     }
     
 }

@@ -4,7 +4,7 @@ function Logear(e)
     var a;
      var correo =document.getElementById("correo").value;
      var pass = document.getElementById("pass").value;
-     var b=pedirPublica();
+     var b=pedirPublica(correo);
    //  a=atob(b);
     
           
@@ -139,9 +139,10 @@ function peticion(formData)
             }
         });
 }
-function pedirPublica()
+function pedirPublica(correo)
 {
     var formdata = new FormData();
+    formdata.append("correo", correo);
     var a;
           $.ajax({
             url: 'PedirPublica',

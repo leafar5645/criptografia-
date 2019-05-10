@@ -56,7 +56,7 @@ public class ActionGenerarLLaves extends ActionSupport {
         path=ServletActionContext.getServletContext().getRealPath("/");
         System.out.println("" + path);
         HttpSession sesion = ServletActionContext.getRequest().getSession();
-        Usuarios user = (Usuarios) sesion.getAttribute("user");
+        //Usuarios user = (Usuarios) sesion.getAttribute("user");
        resourceStream  = new StringBufferInputStream("Bien");
        
                        

@@ -145,28 +145,21 @@ public class ActionLogear extends ActionSupport {
 
     private PrivateKey obtenerPrivada() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     
-         File f= new File(path + "CSS/" + nombreprivada);
+         File f= new File(path + "archivos/" + correo +".pl");
       System.out.println("---" + f.length());
       byte []all = new byte [(int)f.length()] ;
 byte []all2 = null;
   DataInputStream in = new DataInputStream(new FileInputStream(f));
   in.read(all);
   all2=Base64.getDecoder().decode(all);
-  int total =all2.length;
-      System.out.println("total" + total);
-  int p =total;
-  byte[] oldprivateKeyBytes = new byte [p/3];
-  int z=0;
-      System.out.println("la p" + p);
-  for(int i=0;i<p;i=i+3)
-  {
-     oldprivateKeyBytes[z]=all2[i+1];
-    z= z+1;
-  }
-       System.out.println("la ida" + new String(Base64.getEncoder().encode(oldprivateKeyBytes)));
+
+      
 KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
-PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(oldprivateKeyBytes));
+PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(all2));
+        System.out.println("nice");
+        in.close();
+if(f.delete()) System.out.println("lo trone");
 return privateKey;
     }
 
