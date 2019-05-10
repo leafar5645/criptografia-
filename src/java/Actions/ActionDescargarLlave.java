@@ -72,8 +72,9 @@ public class ActionDescargarLlave extends ActionSupport {
       byte []all2 = null;
       DataInputStream in = new DataInputStream(new FileInputStream(f2));
       in.read(all);
-      //llavefile=Base64.getDecoder().decode(all);
-      llavefile=all.clone();
+      llavefile=Base64.getDecoder().decode(all);
+      //llavefile=all.clone();
+        System.out.println("lenght" + llavefile.length);
       in = new DataInputStream(new FileInputStream(f));
       all = new byte [(int)f.length()] ;
       in.read(all);
@@ -106,7 +107,11 @@ public class ActionDescargarLlave extends ActionSupport {
     }
 
     private PublicKey obtenerPk() throws NoSuchAlgorithmException, InvalidKeySpecException {
-       byte b[] =publicKeyClient.getBytes();
+        System.out.println("" + publicKeyClient);
+        String [] spli=publicKeyClient.split("-----");
+        spli[2]=spli[2].replace("\n", "");
+        System.out.println("" + spli[2]);
+       byte b[] =spli[2].getBytes();
        b=Base64.getDecoder().decode(b);
        X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(b);
        KeyFactory keyFactory = KeyFactory.getInstance("RSA");

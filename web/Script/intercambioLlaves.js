@@ -26,7 +26,7 @@ function pedirLlaveServidor()
 //retorna un keyObject
 function generarLlavesRSA()
 {
-    var crypt = new JSEncrypt({ default_key_size: 1024 });
+    var crypt = new JSEncrypt({ default_key_size: 2048 });
     crypt.getKey();
     crypt.getPrivateKey();
     console.log(crypt.getPrivateKey());
@@ -39,13 +39,19 @@ async function enviarLlavePublica(key)
         var exportedAsBase64 = public_key_object;
         console.log(exportedAsBase64);//enviar al servidor
 }
+async function enviarLlavePrivada(key)
+{
+    var public_key_object = key[0];
+        var exportedAsBase64 = public_key_object;
+        console.log(exportedAsBase64);//enviar al servidor
+}
 
 function cifrarRSA(plaintext,key)
 {
     var public_key_object=key[1];
     var cifrado;
 
-    plaintext=window.atob(plaintext);
+  //  plaintext=window.atob(plaintext);
     
      var encrypt = new JSEncrypt();
      encrypt.setPublicKey(public_key_object);
@@ -56,11 +62,11 @@ function cifrarRSA(plaintext,key)
 
 function decifrarRSA(cifrado,key)
 {
-    cifrado=window.atob(cifrado);
+   // cifrado=window.atob(cifrado);
     var decifrado;
      var crypt = new JSEncrypt();
-     console.log(key[0]);
-    crypt.setPrivateKey(key[0]);
+     console.log("la llave " + key);
+    crypt.setPrivateKey(key);
     decifrado = crypt.decrypt(cifrado);
     return decifrado;
 }

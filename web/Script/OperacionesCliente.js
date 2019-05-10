@@ -98,8 +98,12 @@ async function exportarKey(key)
   );
   var exportedKeyBuffer = new Uint8Array(exported);
   var exportedAsString = ab2str(exportedKeyBuffer);
-  var exportedAsBase64 = await window.btoa(exportedAsString);
-  return exportedAsBase64;
+  var exportedAsBase64 = await btoa(exportedAsString);
+  var a= pedirPublicaGeneral();
+  alert("antes de " +  exportedAsBase64  );
+  var cifrada=cifrarpublica(a, exportedAsBase64);
+  alert(cifrada)
+  return cifrada;
 }
 async function Upload ()
 { 
@@ -138,6 +142,29 @@ function peticion(formData)
                 alert("Archivo invalido");
             }
         });
+}
+function pedirPublicaGeneral()
+{
+    var formdata = new FormData();
+    var a;
+          $.ajax({
+            url: 'PedirPublicaGeneral',
+            type: 'POST',
+            data:  formdata,
+            async:false,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+               // alert(data);
+                a=data;
+                
+               
+            },
+            error: function () {
+                alert("error-publica");
+            }
+        });
+       return a; 
 }
 function pedirPublica(correo)
 {

@@ -90,7 +90,7 @@
               <action name="ActualizarPermisos" class="Actions.ActionActualizarPermisos">   
              <result name="success" type="stream" >
                         <param name="contentType">text/html</param>
-                        <param name="inputName">responseStream </param>
+                        <param name="inputName">responseStream</param>
                         
              </result>  
              <result name="error">Nice.jsp</result>   
@@ -98,7 +98,15 @@
                 <action name="PedirLLave2" class="Actions.ActionDescargarLlave">   
              <result name="success" type="stream" >
                         <param name="contentType">text/html</param>
-                        <param name="inputName">resourceStream </param>
+                        <param name="inputName">resourceStream</param>
+                        
+             </result>  
+             <result name="error">Nice.jsp</result>   
+            </action>
+              <action name="PedirPublicaGeneral" class="Actions.ActionPedirPublica">   
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream</param>
                         
              </result>  
              <result name="error">Nice.jsp</result>   

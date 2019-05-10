@@ -44,6 +44,7 @@ async function leer(b,key)
    archivo.onload=  async function()
     {
         arraybuffer=  this.result;
+        console.log(key);
         var arch= await decifrar(arraybuffer,key);
         var myBlob= new Blob([arch]);
         var link = document.createElement('a');
@@ -78,15 +79,24 @@ async function BajarArchivo(ev)
 {
     var nombre=ev.name;
     nombreglobal=ev.name;
-    var llave2= pedirLLave(nombre);
-    var llave3=atob(llave2);
-    var llave =str2ab(llave3);
-    
+     var keys =generarLlavesRSA();
+     var publica =keys[1];
+     var privada =keys[0];
+     console.log(publica);
+     
+    var llave2= pedirLLave(nombre , publica);
+    alert(llave2)
+
+    var llave3=decifrarRSA(llave2,privada);  
+    alert("despues de " + llave3);
+     var llave4=atob(llave3);
+    var llave =str2ab(llave4);
+   
     var iv64 = pedirIV(nombre);
     var ivString=atob(iv64);
     iv =str2ab(ivString);
    //var buffer=await leer(llave); 
-   var key= await importarkeyv(llave);
+   var key=await importarkeyv(llave);
    
    obtenerArchivo(nombre,key);
 }
@@ -105,10 +115,11 @@ function decifrar(archivo,key)
     });
     return archivo;
 }
-function pedirLLave(nombre)
+function pedirLLave(nombre , publica)
 {
       var formdata = new FormData();
-      formdata.append("nombre" , nombre);
+      formdata.append("filename" , nombre);
+      formdata.append("publicKeyClient" , publica);
     var a;
           $.ajax({
             url: 'PedirLLave2',
@@ -150,7 +161,7 @@ function pedirIV(nombre)
 }
 async function importarkeyv(rawKey)
 {
-  return window.crypto.subtle.importKey(
+   return await window.crypto.subtle.importKey(
     "raw",
     rawKey,
     "AES-CBC",
