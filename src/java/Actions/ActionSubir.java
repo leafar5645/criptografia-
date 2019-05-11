@@ -36,7 +36,10 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import entity.HibernateUtil;
+import java.io.BufferedInputStream;
 import java.util.List;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 /**
  *
  * @author betoj
@@ -49,7 +52,7 @@ public class ActionSubir extends ActionSupport {
     private String contenidoA;
     private String nombre;
     private String nombreprivada="pruebaCifradoEstilo.txt";
-
+    private String MAC;
     public String getIv() {
         return iv;
     }
@@ -115,6 +118,15 @@ public class ActionSubir extends ActionSupport {
     public void setArchivoContentType(String archivoContentType) {
         this.archivoContentType = archivoContentType;
     }
+
+    public String getMAC() {
+        return MAC;
+    }
+
+    public void setMAC(String MAC) {
+        this.MAC = MAC;
+    }
+    
     File archivo;
     String archivoFileName;
     String archivoContentType;
@@ -141,13 +153,15 @@ public class ActionSubir extends ActionSupport {
         }
         else
             return ERROR;
+        
         PrivateKey privateKey = obtenerPrivada();
         Cipher cipher = Cipher.getInstance("RSA"); 
         cipher.init(Cipher.DECRYPT_MODE, privateKey);//String p ="hola qyye jace";
         byte [] bkmac=cipher.doFinal(kMAc);
-        String keyMAC= new String(bkmac);
-        System.out.println("ketMAC:"+keyMAC);
-        System.out.println("---------keyMAcTam:"+keyMAC.length());
+        bkmac=Base64.getDecoder().decode(bkmac);
+        SecretKeySpec secretKeySpec = new SecretKeySpec(bkmac, "HmacSHA256");
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(secretKeySpec);
         
        /*
        byte[] llavefile = obtenerLlave(privateKey);
@@ -174,6 +188,21 @@ public class ActionSubir extends ActionSupport {
             File f2= new File(path2);
        File f = new File(path);
        File f3= new File(path3);
+       //MAC
+        DataInputStream in = new DataInputStream(new FileInputStream(archivo));
+        byte [] informacion= new byte[(int) archivo.length()];
+        in.readFully(informacion);
+        byte[] tag =mac.doFinal(informacion);
+            System.out.println(tag[0]);
+        String Tag = new String(Base64.getEncoder().encode(tag));
+            System.out.println("TAg:"+Tag);
+            System.out.println("MAC:"+MAC);
+       if(!Tag.equals(MAC))
+       {
+           System.out.println("MAC Incorrecta");
+           return ERROR;
+       }
+       //---
         FileUtils.copyFile(archivo, f);
       FileUtils.writeStringToFile(f3,iv);
       FileUtils.writeStringToFile(f2, llave);

@@ -1,6 +1,5 @@
-function generarMAC(key)
+function generarMAC(key,file)
 {
-    var file= arraybuffer;
     return window.crypto.subtle.sign(
         "HMAC",
         key,
@@ -36,7 +35,6 @@ function importKeyMAC(key)
     true,
     ["sign", "verify"]
   ).then(function(result){
-      console.log(result);
         return result;
     });
 }

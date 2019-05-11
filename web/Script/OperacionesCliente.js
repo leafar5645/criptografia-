@@ -8,13 +8,10 @@ async function Logear(e)
     var b=pedirPublica(correo);
     var llaveMAC= await generarLlaveMac();
     var MACexportada= await exportarKeyMAC(llaveMAC);
-    
+    sessionStorage.setItem('MACkey',MACexportada);
     var MACcifrada=cifrarpublica(b, MACexportada);
-    console.log(MACexportada);
-    console.log(MACcifrada);
 
      var pass2=cifrarpublica(b , pass);
-     console.log(pass2.length);
      var formData = new FormData();
      formData.append("correo" , correo);
      formData.append("pass" , pass2);
@@ -44,7 +41,6 @@ async function Logear(e)
              document.getElementById("label-login").innerHTML='Usuario o contraseña incorrecta';
              
           }
-          alert("ok");
     
 }
 
@@ -69,7 +65,6 @@ function cargar()
     archivo.onload= function()
     {
         arraybuffer=this.result;
-        
         console.log("Archivo Cargado");
     }
      archivo.readAsArrayBuffer($('#archivo')[0].files[0]);
@@ -110,30 +105,24 @@ async function Upload ()
      var file=  $('#archivo')[0].files[0];
      //cifrdoa AES
    var fileC= await cifrarfile(key);
-    var myBlob= new Blob([fileC],{type:file.type});
+    var myBlob= new Blob([fileC]);
     myBlob.lastModifiedDate= new Date();
     myBlob.name=file.name;
     var importada =await exportarKey(key);
     var formData = new FormData();
     var ivexportedAsString = ab2str(iv);
     var ivexportedAsBase64 = await window.btoa(ivexportedAsString);
-    /*//MAC
-    var llaveMAC= await generarLlaveMac();
-    console.log(llaveMAC);
-    var MAC= await generarMAC(llaveMAC);
-    console.log(MAC);
-    var MACexportada= await exportarKey(llaveMAC);
-    console.log("tam: "+MACexportada.length)
-    var MACimportada= await importKeyMAC(MACexportada);
-    console.log(MACexportada);
-    console.log(MACimportada);
-    var correcto= await verificarMAC(llaveMAC,MAC,arraybuffer);
-    console.log(correcto);*/
+    //MAC
+    var llaveMAC = sessionStorage.getItem('MACkey');
+    llaveMAC= await importKeyMAC(llaveMAC);
+    var MAC= await generarMAC(llaveMAC,fileC);
+    //var correcto= await verificarMAC(llaveMAC,MAC,arraybuffer);
      //var hola = "hola";
         formData.append('archivo', myBlob );
         formData.append('nombre' , file.name);
         formData.append("llave" , importada);
         formData.append("iv" , ivexportedAsBase64);
+        formData.append("MAC" , MAC);
      peticion(formData);
 }
 

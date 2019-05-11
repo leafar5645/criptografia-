@@ -84,7 +84,6 @@ public class ActionGenerarLLaves extends ActionSupport {
     public InputStream getResourceStream() {
         return resourceStream;
     }
-
     public void setResourceStream(InputStream resourceStream) {
         this.resourceStream = resourceStream;
     }

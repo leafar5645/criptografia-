@@ -37,12 +37,28 @@ function verArchivos()
  var arraybuffer;
 async function leer(b,key)
 { 
-    
      var archivo= new FileReader(); 
       await archivo.readAsArrayBuffer(b);
    archivo.onload=  async function()
     {
         arraybuffer=  this.result;
+        //--------------MAC--------------
+        var MAC = pedirMAC(nombreglobal);
+        console.log(MAC);
+        var llaveMAC = sessionStorage.getItem('MACkey');
+        llaveMAC= await importKeyMAC(llaveMAC);
+        var Tag= await generarMAC(llaveMAC,arraybuffer);
+        if(MAC!==Tag)
+        {
+            console.log("MAC INCORRECTA")
+            alert("MAC incorrecta");
+            return;
+        }
+        else
+        {
+            console.log("MAC CORRECTO");
+        }
+        //---------------AES-----------------
         var arch= await decifrar(arraybuffer,key);
         var myBlob= new Blob([arch]);
         var link = document.createElement('a');
@@ -137,6 +153,27 @@ function pedirIV(nombre)
     var a;
           $.ajax({
             url: 'PedirIV',
+            type: 'POST',
+            data:  formdata,
+            async:false,
+            processData: false, // tell jQuery not to process the data
+            contentType: false, // tell jQuery not to set contentType
+            success: function (data) {
+                a=data;
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+        return a;
+}
+function pedirMAC(nombre)
+{
+      var formdata = new FormData();
+      formdata.append("nombre" , nombre);
+    var a;
+          $.ajax({
+            url: 'PedirMAC',
             type: 'POST',
             data:  formdata,
             async:false,
