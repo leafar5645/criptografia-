@@ -53,6 +53,7 @@
                 <option value="1">Operacion</option>
                 <option value="2">Archivo</option>
                 <option value="3">Correo Usuario</option>
+                <option value="4">Todos los registros </option>
             </select> 
             
         </Form>    

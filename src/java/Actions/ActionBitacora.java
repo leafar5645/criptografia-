@@ -46,7 +46,7 @@ public class ActionBitacora extends ActionSupport {
     public String execute() throws Exception {
         System.out.println("" + criterio + valor);
         String operacion="";
-      
+        if(criterio.equalsIgnoreCase("4")) criterioTodo();
         if(criterio.equalsIgnoreCase("1")) criterioOperacion();
         if(criterio.equalsIgnoreCase("2")) { operacion="archivo"; criterioArchivo();}
         if(criterio.equalsIgnoreCase("3")) { 
@@ -129,4 +129,25 @@ public class ActionBitacora extends ActionSupport {
        HttpSession s =   ServletActionContext.getRequest().getSession();
        s.setAttribute("bitacora", bt);
      }
+
+    private void criterioTodo() {
+         Session hibernateSession;
+ hibernateSession=HibernateUtil.getSessionFactory().openSession();
+ Query consulta=hibernateSession.createQuery("from Operaciones");
+  List l2=consulta.list();
+     Bitacora [] bt=null ;
+    if(l2!=null && l2.size()!=0)
+    {   
+        System.out.println("entre " + l2.size());
+       bt= new Bitacora[l2.size()]; 
+       for(int i=0;i<bt.length;i++)
+       {
+           Operaciones op = (Operaciones) l2.get(i);
+           bt[i]= new Bitacora(op.getUsuarios().getCorreo(), op.getIdop() ,op.getOperacion(), op.getFecha() , op.getFilename() , op.getUsuarios().getId() );
+       }
+    }
+       HttpSession s =   ServletActionContext.getRequest().getSession();
+       s.setAttribute("bitacora", bt);
+    
+    }
 }

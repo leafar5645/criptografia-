@@ -117,6 +117,18 @@ function Criterio(e)
        input2.id='submit-cirterio';
        formdata.appendChild(input2);
     }
+    if(option1==='4')
+    {
+         eliminarElemento('submit-cirterio') ;
+        console.log("sale");
+       eliminarElemento("select-operacion") ;
+       eliminarElemento("input-criterio") ; 
+          var input2 = document.createElement("input");
+       input2.type='submit';
+    
+       input2.id='submit-cirterio';
+       formdata.appendChild(input2);
+    }
    // eliminarElemento("submit-criterio") ;
     
    
