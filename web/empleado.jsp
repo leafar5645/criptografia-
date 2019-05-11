@@ -12,6 +12,7 @@
         <script src="Script/intercambioLlaves.js"></script>
         <script src="Script/OperacionesCliente.js"></script>
         <script src="Script/OperacionesClienteBajarArchivos.js"></script>
+         <script src="Script/Empleados.js"></script>
         <link rel="stylesheet" type="text/css" href="CSS/estilo.css">
 
     </head>
@@ -41,8 +42,19 @@
         <button  onclick="verArchivos()">ver Archivos</button>
         <div id="archivos-mostrar">
         </div>
-        <% }
+        <% } if(us.getTipo().equalsIgnoreCase("Administrador")) { %>
+        <form action="Bitacora" id='form-bitacora'>
+            <select placeholder='Criterio de busqueda' name='criterio' id='select-bitacora' onchange='Criterio(this)'>
+                <option selected='selected' value='0'>elija uno</option>
+                <option value="1">Operacion</option>
+                <option value="2">Archivo</option>
+                <option value="3">Correo Usuario</option>
+            </select> 
+            
+        </Form>    
         
+        <%
+            }
         }
   
             else

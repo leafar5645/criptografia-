@@ -16,8 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -28,6 +30,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.List;
 import javax.crypto.Cipher;
+import static javax.management.Query.lt;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Query;
@@ -138,11 +141,12 @@ public class ActionLogear extends ActionSupport {
     {
        return "nada" ;
     }
-    private String iniciar()
+    private String iniciar() throws NoSuchAlgorithmException, UnsupportedEncodingException
     {
            Session hibernateSession;
-        System.out.println("------" + correo + pass);
- hibernateSession=HibernateUtil.getSessionFactory().openSession(); 
+ hibernateSession=HibernateUtil.getSessionFactory().openSession();
+
+pass=sha256(pass); 
  Query consulta=hibernateSession.createQuery("from Usuarios where correo= :correo and pass= :pass ");
  consulta.setParameter("correo", correo);
  consulta.setParameter("pass", pass);
@@ -208,6 +212,15 @@ byte []all2 = null;
     KeyFactory kf = KeyFactory.getInstance("RSA");
     return kf.generatePublic(spec);  
     }
-    
+     static String sha256(String input) throws NoSuchAlgorithmException {
+        MessageDigest mDigest = MessageDigest.getInstance("SHA-256");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sb.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
+         
+        return sb.toString();
+    }
  
 }

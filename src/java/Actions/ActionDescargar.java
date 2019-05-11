@@ -6,6 +6,9 @@
 package Actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.HibernateUtil;
+import entity.Operaciones;
+import entity.Usuarios;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -18,6 +21,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 
 public class ActionDescargar extends ActionSupport {
@@ -79,6 +84,7 @@ public class ActionDescargar extends ActionSupport {
                  System.out.println("Session Invalida");
                  return ERROR;
              }
+             Usuarios user=(Usuarios)s.getAttribute("user");
          String path= ServletActionContext.getServletContext().getRealPath("/archivos");
         File archivo= new File(path+"/"+nombreArchivo);
         System.out.println(path+"/"+nombreArchivo);
@@ -109,6 +115,15 @@ public class ActionDescargar extends ActionSupport {
         response.setContentLength((int)archivo.length());
         out.flush();
         bis.close();
+         Session session;
+       session=HibernateUtil.getSessionFactory().openSession(); 
+       Operaciones op = new Operaciones();
+       op.setUsuarios(user);
+       op.setFilename(nombreArchivo);
+       op.setOperacion("Download");
+        Transaction tx = session.beginTransaction();
+        session.saveOrUpdate(op); 
+         tx.commit();
         
         return NONE;
     }

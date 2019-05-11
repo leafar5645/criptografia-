@@ -47,5 +47,6 @@ Contributor(s):
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
     <mapping resource="entity/Usuarios.hbm.xml"/>
+    <mapping resource="entity/Operaciones.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

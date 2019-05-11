@@ -120,5 +120,8 @@
              </result>  
              <result name="error">Nice.jsp</result>   
             </action>
+            <action name="Bitacora" class="Actions.ActionBitacora">
+                <result name="success">Bitacora.jsp</result> 
+            </action>
     </package>
 </struts>

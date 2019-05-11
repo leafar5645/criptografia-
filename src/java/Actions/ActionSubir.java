@@ -36,6 +36,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import entity.HibernateUtil;
+import entity.Operaciones;
 import java.io.BufferedInputStream;
 import java.util.List;
 import javax.crypto.Mac;
@@ -214,7 +215,15 @@ public class ActionSubir extends ActionSupport {
       resourceStream = new StringBufferInputStream("Bien");
         
        // System.out.println("input"+archivoFileName);
-       
+        Session session;
+       session=HibernateUtil.getSessionFactory().openSession(); 
+       Operaciones op = new Operaciones();
+       op.setUsuarios(user);
+       op.setFilename(cadenaSinAcentos);
+       op.setOperacion("Upload");
+        Transaction tx = session.beginTransaction();
+        session.saveOrUpdate(op); 
+         tx.commit();
             return SUCCESS;
     }
     private PrivateKey obtenerPrivada() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {

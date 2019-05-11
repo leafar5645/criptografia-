@@ -60,6 +60,7 @@ public class ActionActualizarPermisos extends ActionSupport {
  Transaction tx = session.beginTransaction();
  session.update(user); 
          tx.commit();
+       
          responseStream = new StringBufferInputStream("Cambio realizado");
          return SUCCESS;
     }

@@ -54,11 +54,12 @@ public class ActionListaArchivos extends ActionSupport {
             if(archivos.length>0)
                 for (int i = 0; i < archivos.length; i++) 
                 {
-                    if(!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("key")&&!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("iv"))
+                    if(!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("key")&&!archivos[i].split("\\.")[archivos[i].split("\\.").length - 1].equalsIgnoreCase("iv")&& !archivos[i].equalsIgnoreCase("publica.txt") && !archivos[i].equalsIgnoreCase("bandera.html"))
                     salida+=archivos[i]+"@";
                 }
             else
                 salida="_VACIO_";
+            System.out.println("-----------------------" + salida );
             resourceStream = new StringBufferInputStream(salida);
             return SUCCESS;
         }

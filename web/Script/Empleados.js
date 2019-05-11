@@ -25,7 +25,7 @@ function pedirEmpleados()
         
     var split=a.split("@");
     var tabla=document.getElementById("tabla")
-       var tabla ="<table><th>Empleado</th> <tr><td>Nombre</td><td>Permisos</td>" ;
+       var tabla ="<table><th>Empleado</th> <tr><td>Nombre</td><td>Id</td><td>Permisos</td>" ;
    
        
         for (var i = 0; i < split.length; i++) 
@@ -37,7 +37,7 @@ function pedirEmpleados()
               if(split2[1]=="upload")  options="<option value='ALL'>ALL</option><option value='upload'  selected='selected'>Upload</option><option value='download'>Download</option><option value='none'>None</option> ";   
               if(split2[1]=="download")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' selected='selected'>Download</option><option value='none'>None</option>";    
               if(split2[1]=="none")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' >Download</option><option value='none' selected='selected'>None</option>";  
-        tabla+="<tr><td>"+split2[0]+"</td><td><select name='"+split2[2]+"' onchange='CambioPermisos(this)'>"+options+"</select> </td></tr>";
+        tabla+="<tr><td>"+split2[0]+"</td><td>"+split2[2]+"</td><td><select name='"+split2[2]+"' onchange='CambioPermisos(this)'>"+options+"</select> </td></tr>";
           }
           tabla+="</table>";
           document.getElementById("tabla").innerHTML=tabla;
@@ -65,5 +65,70 @@ function CambioPermisos(e)
             }
         });
     
+}
+function Criterio(e)
+{
+   var option1=e.options[e.selectedIndex].value;
+   console.log(option1);
+   if(option1==='0')
+   {
+        eliminarElemento("submit-criterio") ;
+       alert("elige un valor valido"); return 0;}
+   var formdata = document.getElementById("form-bitacora");
+   
+   if(option1==='1')
+   {
+       eliminarElemento('submit-cirterio') ;
+       console.log("entre");
+       eliminarElemento("input-criterio");
+       var array=['Download','Upload'];
+       var selectList = document.createElement("select");
+       selectList.id = "select-operacion";
+       selectList.name="valor";
+       formdata.appendChild(selectList);
+       for (var i = 0; i < array.length; i++) {
+    var option = document.createElement("option");
+    option.value = array[i];
+    option.text = array[i];
+    selectList.appendChild(option);
+}
+   var input2 = document.createElement("input");
+       input2.type='submit';
+    
+       input2.id='submit-cirterio';
+       formdata.appendChild(input2);
+   }
+    if(option1==='2' || option1==='3')
+    {
+        console.log("entra");
+       eliminarElemento('submit-cirterio') ;
+        console.log("sale");
+       eliminarElemento("select-operacion") ;
+       eliminarElemento("input-criterio") ;
+       var input = document.createElement("input");
+       input.type='text';
+       input.name='valor';
+       input.id='input-criterio';
+       input.required='required';
+       formdata.appendChild(input);
+       var input2 = document.createElement("input");
+       input2.type='submit';
+    
+       input2.id='submit-cirterio';
+       formdata.appendChild(input2);
+    }
+   // eliminarElemento("submit-criterio") ;
+    
+   
+   
+}
+function eliminarElemento(id){
+	imagen = document.getElementById(id);	
+	if (!imagen){
+		console.log("El elemento selecionado no existe");
+	} else {
+		padre = imagen.parentNode;
+		padre.removeChild(imagen);
+	}
 }
 
