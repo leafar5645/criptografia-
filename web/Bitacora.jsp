@@ -15,6 +15,7 @@
     <body>
         <h1><% Bitacora [] bt =(Bitacora []) session.getAttribute("bitacora");
                 //out.print(bt.length);
+                
                 if(bt!=null) 
                 {%>
                 <table border='1'>
@@ -24,7 +25,11 @@
                     
                     <% } %>
                 </table>
-                <% }
+                <%}
+                    if(bt==null || bt.length==0)
+{
+                    out.print("<h1>Sin resultados</h1>");
+}
             %></h1>
     </body>
 </html>

@@ -42,10 +42,14 @@
         <button  onclick="verArchivos()">ver Archivos</button>
         <div id="archivos-mostrar">
         </div>
-        <% } if(us.getTipo().equalsIgnoreCase("Administrador")) { %>
+        <br>
+        <br>
+        <br>
+        <% } if(us.getTipo().equalsIgnoreCase("Administrador")) {%>
+        <h2>Bitacora</h2>
         <form action="Bitacora" id='form-bitacora'>
             <select placeholder='Criterio de busqueda' name='criterio' id='select-bitacora' onchange='Criterio(this)'>
-                <option selected='selected' value='0'>elija uno</option>
+                <option selected='selected' value='0'>Criterio de busqueda</option>
                 <option value="1">Operacion</option>
                 <option value="2">Archivo</option>
                 <option value="3">Correo Usuario</option>
