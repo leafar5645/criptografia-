@@ -20,7 +20,6 @@ function verArchivos()
                       archivos=["vacio"]
                   else     
                     archivos=a.split("@");
-                console.log(a);
             },
             error: function () {
                 alert("Hubo un error en el servidor");
@@ -44,7 +43,6 @@ async function leer(b,key)
    archivo.onload=  async function()
     {
         arraybuffer=  this.result;
-        console.log(key);
         var arch= await decifrar(arraybuffer,key);
         var myBlob= new Blob([arch]);
         var link = document.createElement('a');
@@ -81,21 +79,15 @@ async function BajarArchivo(ev)
     nombreglobal=ev.name;
      var keys =generarLlavesRSA();
      var publica =keys[1];
-     var privada =keys[0];
-     console.log(publica);
-     
+     var privada =keys[0]; 
     var llave2= pedirLLave(nombre , publica);
-    alert(llave2)
-
     var llave3=decifrarRSA(llave2,privada);  
-    alert("despues de " + llave3);
      var llave4=atob(llave3);
     var llave =str2ab(llave4);
    
     var iv64 = pedirIV(nombre);
     var ivString=atob(iv64);
     iv =str2ab(ivString);
-   //var buffer=await leer(llave); 
    var key=await importarkeyv(llave);
    
    obtenerArchivo(nombre,key);
@@ -169,28 +161,6 @@ async function importarkeyv(rawKey)
     ["encrypt", "decrypt"]
   );
 }
-
-//-----------------------PRUEBAS---------------
-/*
-function pruebas()
-{
-    
-    var keyP=null;
-    var encript= pedirLlaveServidor();
-    
-
-    var key= generarLlavesRSA();
-    console.log("llaveC"+key[0]);
-    console.log("llaveC"+key[1]);
-    enviarLlavePublica(key);
-    var prueba="hola";
-    prueba=window.btoa(prueba);
-    prueba= cifrarRSA(prueba,key);
-    console.log("cifrado: "+prueba);
-    prueba= decifrarRSA(prueba,key);
-     console.log("decifrado: "+prueba);
-     
-}*/
 /*Convert a string into an ArrayBuffer
 from https://developers.google.com/web/updates/2012/06/How-to-convert-ArrayBuffer-to-and-from-String
 */

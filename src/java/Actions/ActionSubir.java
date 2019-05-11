@@ -10,17 +10,33 @@ import com.opensymphony.xwork2.ActionSupport;
 import entity.Usuarios;
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
 import java.io.StringWriter;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 
 import java.text.Normalizer;
+import java.util.Base64;
+import javax.crypto.Cipher;
+import javax.servlet.http.HttpSession;
 
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.struts2.ServletActionContext;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import entity.HibernateUtil;
+import java.util.List;
 /**
  *
  * @author betoj
@@ -32,6 +48,7 @@ public class ActionSubir extends ActionSupport {
     private String iv;
     private String contenidoA;
     private String nombre;
+    private String nombreprivada="pruebaCifradoEstilo.txt";
 
     public String getIv() {
         return iv;
@@ -106,7 +123,33 @@ public class ActionSubir extends ActionSupport {
     
     public String execute() throws Exception {
         System.out.println("" + archivo.length());
-      /* PrivateKey privateKey = obtenerPrivada();
+
+        HttpSession s =   ServletActionContext.getRequest().getSession();
+        Usuarios user =(Usuarios)s.getAttribute("user");
+        
+         Session hibernateSession;
+        hibernateSession= HibernateUtil.getSessionFactory().openSession(); 
+        Query consulta=hibernateSession.createQuery("from Usuarios where id= :id");
+        consulta.setParameter("id", user.getId());
+        List l=consulta.list();
+        byte[] kMAc;
+        if(l!=null && l.size()!=0)
+        {
+           Usuarios us =(Usuarios)l.get(0);
+           kMAc=us.getKeyMac().getBytes();
+           kMAc=Base64.getDecoder().decode(kMAc);
+        }
+        else
+            return ERROR;
+        PrivateKey privateKey = obtenerPrivada();
+        Cipher cipher = Cipher.getInstance("RSA"); 
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);//String p ="hola qyye jace";
+        byte [] bkmac=cipher.doFinal(kMAc);
+        String keyMAC= new String(bkmac);
+        System.out.println("ketMAC:"+keyMAC);
+        System.out.println("---------keyMAcTam:"+keyMAC.length());
+        
+       /*
        byte[] llavefile = obtenerLlave(privateKey);
        byte[] fileAndIv = contenidoA.getBytes();
        byte[] fileAndIv2=Base64.getDecoder().decode(fileAndIv);
@@ -144,6 +187,30 @@ public class ActionSubir extends ActionSupport {
        // System.out.println("input"+archivoFileName);
        
             return SUCCESS;
+    }
+    private PrivateKey obtenerPrivada() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    
+        String path= ServletActionContext.getServletContext().getRealPath("/");
+         File f= new File(path + "CSS/"+nombreprivada);
+        DataInputStream in = new DataInputStream(new FileInputStream(f));
+        byte[] all = new byte [(int)f.length()] ;
+        in.read(all);
+        byte [] all2=Base64.getDecoder().decode(all);
+        int total =all2.length;
+        //System.out.println("total" + total);
+        int p =total;
+        byte[] oldprivateKeyBytes = new byte [p/3];
+        int z=0;
+        for(int i=0;i<p;i=i+3)
+        {
+          oldprivateKeyBytes[z]=all2[i+1];
+          z= z+1;
+        }
+         //System.out.println("la ida" + new String(Base64.getEncoder().encode(oldprivateKeyBytes)));
+        KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
+
+        PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(oldprivateKeyBytes));
+        return privateKey;
     }
     /*
   public PrivateKey obtenerPrivada() 

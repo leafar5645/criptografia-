@@ -20,10 +20,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 
 
-/**
- *
- * @author betoj
- */
 public class ActionDescargar extends ActionSupport {
     private InputStream resourceStream;
     private String llave;

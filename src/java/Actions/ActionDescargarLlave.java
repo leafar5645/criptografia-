@@ -84,7 +84,6 @@ public class ActionDescargarLlave extends ActionSupport {
       int p =total;
       byte[] oldprivateKeyBytes = new byte [p/3];
       int z=0;
-      System.out.println("la p" + p);
       for(int i=0;i<p;i=i+3)
       {
         oldprivateKeyBytes[z]=all2[i+1];

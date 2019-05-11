@@ -32,6 +32,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -40,6 +41,7 @@ import org.hibernate.Session;
 public class ActionLogear extends ActionSupport {
     private String correo;
     private String pass;
+    private String keyMAC;
     private String operacion;
       InputStream responseStream;
          private String nombreprivada="pruebaCifradoEstilo.txt";
@@ -79,7 +81,15 @@ public class ActionLogear extends ActionSupport {
     public void setResponseStream(InputStream responseStream) {
         this.responseStream = responseStream;
     }
-      
+
+    public String getKeyMAC() {
+        return keyMAC;
+    }
+
+    public void setKeyMAC(String keyMAC) {
+        this.keyMAC = keyMAC;
+    }
+     
     
     public ActionLogear() {
     }
@@ -93,16 +103,28 @@ public class ActionLogear extends ActionSupport {
         byte [] b = pass.getBytes();
         byte [] c=Base64.getDecoder().decode(b);
         System.out.println("tam" + c.length);
+        //keyMAC
+        b = keyMAC.getBytes();
+        byte [] kMAc = Base64.getDecoder().decode(b);
+        //keyMAC=new String(kMAc);
         PrivateKey prk=obtenerPrivada();
        // PublicKey pubk=obtenerPublica();
        // String prueba="12345";
           Cipher cipher = Cipher.getInstance("RSA");  
          cipher.init(Cipher.DECRYPT_MODE, prk);//String p ="hola qyye jace";
           byte [] limpio=cipher.doFinal(c);
+          
+          byte [] bkmac=cipher.doFinal(kMAc);
+
+          cipher.init(Cipher.ENCRYPT_MODE, obtenerPublica());
+          bkmac=cipher.doFinal(bkmac);
+          bkmac=Base64.getEncoder().encode(bkmac);
+          keyMAC= new String(bkmac);
          // byte [] limpio2=Base64.getEncoder().encode(limpio);
           String prueba2= new String(limpio);
           System.out.println("que pasa" + prueba2);
           pass=prueba2;
+          
          // System.out.println("nueva" + pass);
         if(operacion.equals("llave"))
             respuesta=llave();
@@ -128,13 +150,21 @@ public class ActionLogear extends ActionSupport {
  String respuesta="";
  if(l!=null && l.size()!=0)
  {
- Usuarios us =(Usuarios)l.get(0);
+    Usuarios us =(Usuarios)l.get(0);
         System.out.println(us.getNombre());
         respuesta="empleado.jsp";
-     HttpSession s =   ServletActionContext.getRequest().getSession();
-     s.setAttribute("user", us);
+      Transaction t = hibernateSession.beginTransaction();
+    us.setKeyMac(keyMAC);
+    hibernateSession.update(us);
+    t.commit();
+    hibernateSession.close();
     
-      return respuesta;
+     HttpSession s =   ServletActionContext.getRequest().getSession();
+     us.setPass("********");
+     us.setKeyMac("*********");
+     s.setAttribute("user", us);
+     
+    return respuesta;
  }
  else
  {
@@ -146,21 +176,21 @@ public class ActionLogear extends ActionSupport {
     private PrivateKey obtenerPrivada() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     
          File f= new File(path + "archivos/" + correo +".pl");
-      System.out.println("---" + f.length());
-      byte []all = new byte [(int)f.length()] ;
-byte []all2 = null;
-  DataInputStream in = new DataInputStream(new FileInputStream(f));
-  in.read(all);
-  all2=Base64.getDecoder().decode(all);
+                System.out.println("---" + f.length());
+                byte []all = new byte [(int)f.length()] ;
+          byte []all2 = null;
+            DataInputStream in = new DataInputStream(new FileInputStream(f));
+            in.read(all);
+            all2=Base64.getDecoder().decode(all);
 
-      
-KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
-PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(all2));
-        System.out.println("nice");
-        in.close();
-if(f.delete()) System.out.println("lo trone");
-return privateKey;
+          KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
+
+          PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(all2));
+                  System.out.println("nice");
+                  in.close();
+          if(f.delete()) System.out.println("lo trone");
+          return privateKey;
     }
 
     private PublicKey obtenerPublica() throws NoSuchAlgorithmException, InvalidKeySpecException, FileNotFoundException, IOException {
@@ -179,4 +209,5 @@ byte []all2 = null;
     return kf.generatePublic(spec);  
     }
     
+ 
 }

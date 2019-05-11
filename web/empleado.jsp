@@ -1,8 +1,3 @@
-<%-- 
-    Document   : empleado
-    Created on : 25/04/2019, 11:12:37 AM
-    Author     : Marcus
---%>
 
 <%@page import="entity.Usuarios"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -13,6 +8,7 @@
         <title>JSP Page</title>
         <script src="Script/jsencrypt.js"></script>
         <script src="Script/jquery-3.3.1.min.js"></script>
+        <script src="Script/MAC.js"></script>
         <script src="Script/intercambioLlaves.js"></script>
         <script src="Script/OperacionesCliente.js"></script>
         <script src="Script/OperacionesClienteBajarArchivos.js"></script>

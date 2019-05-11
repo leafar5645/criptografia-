@@ -15,10 +15,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-/**
- *
- * @author Marcus
- */
 public class ActionActualizarPermisos extends ActionSupport {
     InputStream responseStream;
     private int id;
