@@ -3,7 +3,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 */
-/* 
+/*
     Created on : 7/05/2019, 07:18:47 PM
     Author     : Marcus
 */
@@ -32,3 +32,73 @@ li a {
 li a:hover {
   background-color: aqua;
 }
+
+	body{
+        padding-top:4.2rem;
+		padding-bottom:4.2rem;
+		background:rgba(0, 0, 0, 0.76);
+        }
+
+    	header{
+    				background-color: #fff;
+
+        }
+        footer{
+                    background-color: #fff;
+
+        }
+         .myform{
+		position: relative;
+		display: -ms-flexbox;
+		display: flex;
+		padding: 1rem;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		width: 100%;
+		pointer-events: auto;
+		background-color: #fff;
+		background-clip: padding-box;
+		border: 1px solid rgba(0,0,0,.2);
+		border-radius: 1.1rem;
+		outline: 0;
+		max-width: 500px;
+		 }
+         .tx-tfm{
+         text-transform:uppercase;
+         }
+         .jumbotron{
+         background: #428BCA;
+         color: #fff;
+         padding: 20px 0;
+
+         }
+         .mybtn{
+         border-radius:50px;
+         }
+        .navbar{
+         margin-top: 0;
+         margin-bottom: 0;
+         }
+         .login-or {
+         position: relative;
+         color: #aaa;
+         margin-top: 10px;
+         margin-bottom: 10px;
+         padding-top: 10px;
+         padding-bottom: 10px;
+         }
+         .span-or {
+         display: block;
+         position: absolute;
+         left: 50%;
+         top: -2px;
+         margin-left: -25px;
+         background-color: #fff;
+         width: 50px;
+         text-align: center;
+         }
+         .hr-or {
+         height: 1px;
+         margin-top: 0px !important;
+         margin-bottom: 0px !important;
+         }

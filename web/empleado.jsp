@@ -17,18 +17,18 @@
 
     </head>
     <body>
-        <% 
+        <%
             if(session.getAttribute("user")!=null)
             {
         Usuarios us = (Usuarios)session.getAttribute("user");
-          
+
         %>
         <ul><li><a href='empleado.jsp'>Inicio</a></li><%if(us.getTipo().equalsIgnoreCase("Administrador")){%>
             <li><a href='permisos.jsp'>Permisos</a> </li>
             <% }%>
             <li><a href='Logout'>Salir</a></li></ul>
-        
-        <h1><% out.print(us.getNombre()); %></h1> 
+
+        <h1><% out.print(us.getNombre()); %></h1>
         <br>
         <br>
         <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("upload") ) {%>
@@ -54,24 +54,24 @@
                 <option value="2">Archivo</option>
                 <option value="3">Correo Usuario</option>
                 <option value="4">Todos los registros </option>
-            </select> 
-            
-        </Form>    
-        
+            </select>
+
+        </Form>
+
         <%
             }
         }
-  
+
             else
             {
                 response.sendRedirect("Login.html");
             }
         %>
-        
-        
-        
-        
-        
-        
+
+
+
+
+
+
     </body>
 </html>
