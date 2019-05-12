@@ -23,6 +23,7 @@ public class LogOut extends ActionSupport {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("user");
         session.invalidate();
+        //session.getAttribute("user");
         return SUCCESS;
     }
 }

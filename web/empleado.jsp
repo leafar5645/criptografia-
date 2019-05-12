@@ -25,6 +25,7 @@
         %>
         <ul><li><a href='empleado.jsp'>Inicio</a></li><%if(us.getTipo().equalsIgnoreCase("Administrador")){%>
             <li><a href='permisos.jsp'>Permisos</a> </li>
+            <li><a onclick="NuevasGenerales()">Nuevas LLaves</a></li>
             <% }%>
             <li><a href='Logout'>Salir</a></li></ul>
 

@@ -56,7 +56,12 @@ public class ActionGenerarLLaves extends ActionSupport {
         path=ServletActionContext.getServletContext().getRealPath("/");
         System.out.println("" + path);
         HttpSession sesion = ServletActionContext.getRequest().getSession();
-        //Usuarios user = (Usuarios) sesion.getAttribute("user");
+        if(sesion.getAttribute("user")==null)
+        {
+             resourceStream  = new StringBufferInputStream("Inicia sesion como administrador primero");
+             return SUCCESS;
+        }
+        Usuarios user = (Usuarios) sesion.getAttribute("user");
        resourceStream  = new StringBufferInputStream("Bien");
        
                        
@@ -72,7 +77,7 @@ public class ActionGenerarLLaves extends ActionSupport {
                          escribirPublic(pubKey);
                          PrivateKey privateKey = keyPair.getPrivate();
                          escribirPrivate(privateKey);
-                         
+                         destruirSesion(sesion);
         
        // System.out.println("input"+archivoFileName);
        
@@ -213,4 +218,11 @@ byte [] last3=Base64.getEncoder().encode(b3);
         
         
     }
+    public void destruirSesion(HttpSession session)
+    {
+        session.removeAttribute("user");
+        session.invalidate();
+    }
 }
+
+

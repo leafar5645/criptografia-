@@ -143,4 +143,30 @@ function eliminarElemento(id){
 		padre.removeChild(imagen);
 	}
 }
+function NuevasGenerales()
+{
+    if(confirm("Si continuas se cerrara tu sesion y se generan las nuevas llaves"))
+    { var a;
+        var formData = new FormData();
+         $.ajax({
+            url: 'Nuevas',
+            type: 'Post',
+            data: formData,
+            async:false,
+            processData: false,
+            contentType: false,  
+            success: function (data) {
+                  a =data.toString();
+   
+            },
+            error: function () {
+                alert("Hubo un error en el servidor");
+            }
+          });
+          if(a==="Bien")
+          {
+              window.location="Login.html";
+          }
+    }
+}
 
