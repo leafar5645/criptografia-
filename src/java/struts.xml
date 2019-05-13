@@ -123,5 +123,14 @@
             <action name="Bitacora" class="Actions.ActionBitacora">
                 <result name="success">Bitacora.jsp</result> 
             </action>
+            <action name="CambiarPass" class="Actions.ActionCambiarPass">   
+             <result name="success" type="stream" >
+                        <param name="contentType">text/html</param>
+                        <param name="inputName">resourceStream </param>
+                        
+             </result>  
+             <result name="error">Nice.jsp</result>   
+            </action>
+            
     </package>
 </struts>

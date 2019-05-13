@@ -6,6 +6,7 @@
 package Actions;
 
 import com.opensymphony.xwork2.ActionSupport;
+import entity.Usuarios;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,6 +58,13 @@ public class ActionEnviarPublica extends ActionSupport {
     
     public String execute() throws Exception {
        aleatorios =  SecureRandom.getInstance("SHA1PRNG");
+         HttpSession sesion=ServletActionContext.getRequest().getSession();
+       if(correo==null && sesion.getAttribute("user")!=null)
+       {
+         
+           Usuarios us=(Usuarios)sesion.getAttribute("user");
+           correo=us.getCorreo();
+       }
        path=ServletActionContext.getServletContext().getRealPath("/");
        System.out.println("" + path);
        resourceStream  = new StringBufferInputStream("Bien");
