@@ -71,7 +71,8 @@ public class ActionPedirMAC extends ActionSupport {
  public String execute() throws Exception {
         HttpSession s =   ServletActionContext.getRequest().getSession();
         Usuarios user =(Usuarios)s.getAttribute("user");
-        
+        if(user==null)
+            return ERROR;
          Session hibernateSession;
         hibernateSession= HibernateUtil.getSessionFactory().openSession(); 
         Query consulta=hibernateSession.createQuery("from Usuarios where id= :id");

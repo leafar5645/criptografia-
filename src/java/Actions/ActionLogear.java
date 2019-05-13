@@ -101,8 +101,8 @@ public class ActionLogear extends ActionSupport {
        
         path=ServletActionContext.getServletContext().getRealPath("/");
         String respuesta="";
-        System.out.println(operacion + correo );
-        System.out.println("--- " + pass);
+        //System.out.println(operacion + correo );
+        //System.out.println("--- " + pass);
         byte [] b = pass.getBytes();
         byte [] c=Base64.getDecoder().decode(b);
         System.out.println("tam" + c.length);
@@ -180,7 +180,7 @@ pass=sha256(pass);
     private PrivateKey obtenerPrivada() throws FileNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeySpecException {
     
          File f= new File(path + "archivos/" + correo +".pl");
-                System.out.println("---" + f.length());
+                //System.out.println("---" + f.length());
                 byte []all = new byte [(int)f.length()] ;
           byte []all2 = null;
             DataInputStream in = new DataInputStream(new FileInputStream(f));
@@ -191,16 +191,16 @@ pass=sha256(pass);
           KeyFactory kf = KeyFactory.getInstance("RSA"); // or "EC" or whatever
 
           PrivateKey privateKey = kf.generatePrivate(new PKCS8EncodedKeySpec(all2));
-                  System.out.println("nice");
+                  //System.out.println("nice");
                   in.close();
-          if(f.delete()) System.out.println("lo trone");
+          if(f.delete()) System.out.println("");
           return privateKey;
     }
 
     private PublicKey obtenerPublica() throws NoSuchAlgorithmException, InvalidKeySpecException, FileNotFoundException, IOException {
    
        File f= new File(path + "archivos/" + nombrepublica);
-      System.out.println("---" + f.length());
+      //System.out.println("---" + f.length());
       byte []all = new byte [(int)f.length()] ;
 byte []all2 = null;
   DataInputStream in = new DataInputStream(new FileInputStream(f));
