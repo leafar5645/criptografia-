@@ -8,30 +8,7 @@ and open the template in the editor.
     Author     : Marcus
 */
 
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #0016b0;
-}
 
-li {
-  float: left;
-}
-
-li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-/* Change the link color to #111 (black) on hover */
-li a:hover {
-  background-color: aqua;
-}
 
 	body{
         padding-top:4.2rem;
@@ -70,6 +47,7 @@ li a:hover {
          background: #428BCA;
          color: #fff;
          padding: 20px 0;
+                  margin-bottom: 0;
 
          }
          .mybtn{
