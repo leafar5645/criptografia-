@@ -193,4 +193,32 @@ function RegisterA(e)
     
     
 }
+function Registrame()
+{
+    var nombre = document.getElementById("nombre").value;
+    var pass = document.getElementById("pass").value;
+    var correo=document.getElementById("correo").value;
+    var b= pedirPublica(correo);
+    var pass2=cifrarpublica(b , pass);
+    let formData = new FormData();
+    formData.append("correo",correo);
+    formData.append("pass", pass2);
+    formData.append("nombre", nombre);
+     $.ajax({
+            url: 'Registrame',
+            type: 'Post',
+            data: formData,
+            async:false,
+            processData: false,
+            contentType: false,  
+            success: function (data) {
+                 alert(data);
+   
+            },
+            error: function () {
+                alert("Hubo un error en el servidor");
+            }
+          });
+    
+}
 
