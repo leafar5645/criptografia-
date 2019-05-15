@@ -169,4 +169,28 @@ function NuevasGenerales()
           }
     }
 }
+function RegisterA(e)
+{
+    var correo=document.getElementById("correo").value;
+   
+    let formData = new FormData();
+    formData.append("correo" , correo);
+     $.ajax({
+            url: 'RegistrarCorreo',
+            type: 'Post',
+            data: formData,
+            async:false,
+            processData: false,
+            contentType: false,  
+            success: function (data) {
+                 alert(data);
+   
+            },
+            error: function () {
+                alert("Hubo un error en el servidor");
+            }
+          });
+    
+    
+}
 
