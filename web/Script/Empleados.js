@@ -37,7 +37,7 @@ function pedirEmpleados()
               if(split2[1]=="upload")  options="<option value='ALL'>ALL</option><option value='upload'  selected='selected'>Upload</option><option value='download'>Download</option><option value='none'>None</option> ";   
               if(split2[1]=="download")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' selected='selected'>Download</option><option value='none'>None</option>";    
               if(split2[1]=="none")options="<option value='ALL'>ALL</option><option value='upload'>Upload</option><option value='download' >Download</option><option value='none' selected='selected'>None</option>";  
-        tabla+="<tr><td>"+split2[0]+"</td><td>"+split2[2]+"</td><td><select name='"+split2[2]+"' onchange='CambioPermisos(this)'>"+options+"</select> </td></tr>";
+        tabla+="<tr><td>"+split2[0]+"</td><td>"+split2[2]+"</td><td><select class='form-control' name='"+split2[2]+"' onchange='CambioPermisos(this)'>"+options+"</select> </td></tr>";
           }
           tabla+="</table>";
           document.getElementById("tabla").innerHTML=tabla;
@@ -85,6 +85,7 @@ function Criterio(e)
        var selectList = document.createElement("select");
        selectList.id = "select-operacion";
        selectList.name="valor";
+       selectList.class="form-control";
        formdata.appendChild(selectList);
        for (var i = 0; i < array.length; i++) {
     var option = document.createElement("option");
@@ -96,6 +97,7 @@ function Criterio(e)
        input2.type='submit';
     
        input2.id='submit-cirterio';
+       input2.class="btn btn-block mybtn btn-primary tx-tfm";
        formdata.appendChild(input2);
    }
     if(option1==='2' || option1==='3')
@@ -110,10 +112,11 @@ function Criterio(e)
        input.name='valor';
        input.id='input-criterio';
        input.required='required';
+       input.class='form-control';
        formdata.appendChild(input);
        var input2 = document.createElement("input");
        input2.type='submit';
-    
+       input2.class="btn btn-block mybtn btn-primary tx-tfm";
        input2.id='submit-cirterio';
        formdata.appendChild(input2);
     }
@@ -213,12 +216,13 @@ function Registrame()
             contentType: false,  
             success: function (data) {
                  alert(data);
+                 
    
             },
             error: function () {
                 alert("Hubo un error en el servidor");
             }
           });
-    
+    window.location="Login.html";
 }
 

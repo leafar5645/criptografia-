@@ -28,19 +28,25 @@
         %>
         <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a href='empleado.jsp' class="nav-link">Inicio</a><%if(us.getTipo().equalsIgnoreCase("Administrador")){%>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <a href='empleado.jsp' class="nav-link">Inicio</a>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+          <%if(us.getTipo().equalsIgnoreCase("Administrador")){%>
+            
                 <li class="nav-item active">
                 <a href='permisos.jsp' class="nav-link">Permisos</a>
                 </li>
                 <li class="nav-item active">
                <a href="#" onclick="NuevasGenerales()" class="nav-link">Nuevas Llaves</a>
                </li>
+                <li class="nav-item active">
+                <a href='RegistraA.jsp' class="nav-link">Registrar Usuario</a>
+                </li>
                <% }%>
                <li class="nav-item active">
                <a href='Logout' class="nav-link">Salir</a>
            </li>
+            <li class="nav-item active"><a href="CambioPass.jsp" class="nav-link">Cambiar Contraseña</a></li>
             </ul>
                 <form class="form-inline my-2 my-lg-0">
     			      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
