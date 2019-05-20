@@ -68,7 +68,7 @@
           <div class="container">
                   <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("upload") ) {%>
                   <h2>Selecciona el archivo a subir</h2>
-                  <input class="form-control-file" type="file" name='archivo' id="archivo" onchange="cargar()"/>
+                  <input class="form-control-file" type="file" name='archivo' id="archivo" onchange="cargar()"/><br><br>
                   <button class="btn btn-primary" onclick="Upload()">Subir Archivo</button><br><br>
                   <% }%>
                   <% if(us.getPermisos().equalsIgnoreCase("ALL") || us.getPermisos().equalsIgnoreCase("download") ) {%>
@@ -78,6 +78,7 @@
           </div>
           <div class="container">
               <% } if(us.getTipo().equalsIgnoreCase("Administrador")) {%>
+               <br><br>
               <h2>Bitacora</h2>
               <form action="Bitacora" id='form-bitacora'>
                   <select class="form-control"  placeholder='Criterio de busqueda' name='criterio' id='select-bitacora' onchange='Criterio(this)'>
