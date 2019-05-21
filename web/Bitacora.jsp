@@ -50,12 +50,7 @@
            </li>
            <li class="nav-item active"><a href="CambioPass.jsp" class="nav-link">Cambiar Contraseña</a></li>
             </ul>
-                <form class="form-inline my-2 my-lg-0">
-    			      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    			      <button class="btn btn-primary" type="submit">
-    			      <span class="oi oi-magnifying-glass"></span>
-    			      </button>
-    			    </form>
+              
                 </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     			    <span class="navbar-toggler-icon"></span>
